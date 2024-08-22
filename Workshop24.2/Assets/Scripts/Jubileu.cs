@@ -21,18 +21,51 @@ public class Jubileu : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        inputX = Input.GetAxisRaw("Horizontal");
-        inputJump = Input.GetKeyDown(KeyCode.Space);
-
-        if(inputJump && inGround)
-        {
-            rb.velocity = new Vector2(rb.velocity.x, forceJump);
-
-        }
+        
+        Inputs();
+        JumpLogic();
     }
 
     private void FixedUpdate()
     {
-        rb.velocity = new Vector2(inputX *speed, rb.velocity.y);
+
+        MoveLogic();
+    }
+
+
+
+    public void Inputs()
+    {
+
+        inputX = Input.GetAxisRaw("Horizontal");
+        inputJump = Input.GetKeyDown(KeyCode.Space);
+    }
+    public void JumpLogic()
+    {
+
+        if(inputJump && inGround)
+        {
+
+            rb.velocity = new Vector2(rb.velocity.x, forceJump );
+        }
+    }
+    public void MoveLogic(){
+
+        rb.velocity = new Vector2(inputX *speed , rb.velocity.y);
+    }
+
+
+    private void OnCollisionEnter2D(Collision2D collision){
+
+        if(collision.gameObject.CompareTag("Ground")){
+            inGround = true;
+        }
+    }
+
+    private void OnCollisionExit2D(Collision2D collision){
+
+        if(collision.gameObject.CompareTag("Ground")){
+            inGround = false;
+        }
     }
 }
