@@ -5,6 +5,9 @@ using UnityEngine;
 public class Jubileu : MonoBehaviour
 {
     private Rigidbody2D rb;
+    private SpriteRenderer sr;
+    private Animator anim;
+
     public float inputX;
     public bool inputJump;
 
@@ -16,6 +19,8 @@ public class Jubileu : MonoBehaviour
     void Start()
     {
         rb = GetComponent<Rigidbody2D>();
+        sr = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -24,6 +29,8 @@ public class Jubileu : MonoBehaviour
         
         Inputs();
         JumpLogic();
+        Animations();
+        Flip();
     }
 
     private void FixedUpdate()
@@ -54,6 +61,18 @@ public class Jubileu : MonoBehaviour
         rb.velocity = new Vector2(inputX *speed , rb.velocity.y);
     }
 
+    public void Flip(){
+        if (inputX > 0 ){
+            
+            sr.flipX = false;
+        }else if (inputX < 0){
+            
+            sr.flipX = true;
+        }
+    }
+
+
+
 
     private void OnCollisionEnter2D(Collision2D collision){
 
@@ -67,5 +86,10 @@ public class Jubileu : MonoBehaviour
         if(collision.gameObject.CompareTag("Ground")){
             inGround = false;
         }
+    }
+
+    public void Animations(){
+
+        anim.SetFloat("Horizontal", rb.velocity.x);
     }
 }
